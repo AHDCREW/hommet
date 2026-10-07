@@ -6,9 +6,10 @@ import GlareHover from "./GlareHover";
 import Magnet from "./Magnet";
 import ScrollReveal from "./ScrollReveal";
 import SplitText from "./SplitText";
+import { useTheme } from "./theme-context";
 
 // One place that adapts the React Bits components to this site: every animated piece goes through
-// here so it is skipped for visitors who ask for reduced motion (the CSS rule in globals.css cannot stop JS animation).
+// here so it is skipped for visitors who ask for reduced motion (the CSS rule in each theme's theme.css cannot stop JS animation).
 const media = (query: string) => ({
   subscribe: (notify: () => void) => {
     const list = matchMedia(query);
@@ -68,6 +69,7 @@ export function Pull({ children }: { children: ReactNode }) {
 // A light sheen sweeping across an image tile on hover. `className` carries the tile's corner radius.
 export function Glare({ children, className = "" }: { children: ReactNode; className?: string }) {
   const still = useReducedMotion();
+  const { glare } = useTheme();
   if (still) return <div className={className}>{children}</div>;
-  return <GlareHover className={className} glareOpacity={0.12} glareSize={300} transitionDuration={800}>{children}</GlareHover>;
+  return <GlareHover className={className} glareColor={glare} glareOpacity={0.12} glareSize={300} transitionDuration={800}>{children}</GlareHover>;
 }

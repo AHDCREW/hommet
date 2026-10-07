@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, RotateCcw, X } from "lucide-react";
 import { bot, greetingFor, reply, teaserFor, type ChatReply } from "@/app/chat-script";
+import { themeHref } from "@/app/themes";
+import { useTheme } from "@/components/theme-context";
 
 type Message = { id: number; from: "bot"; reply: ChatReply } | { id: number; from: "user"; text: string };
 const start = (brand?: string): Message[] => [{ id: 0, from: "bot", reply: greetingFor(brand) }];
@@ -10,7 +12,7 @@ const SEEN = "homi-teaser-seen";
 const external = (href: string) => href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
 
 // True while the launcher sits over a hero image (home slider or brand page). The launcher and its bubble are glass
-// there and go back to solid white/dark below it (see components/chat-glass.css). Without a hero it stays false.
+// there and go back to solid white/dark below it (see chat-glass.css in app/home1 and app/home2). Without a hero it stays false.
 function useOverHero(launcher: React.RefObject<HTMLButtonElement | null>) {
   const [over, setOver] = useState(false);
   useEffect(() => {
@@ -35,18 +37,20 @@ function useOverHero(launcher: React.RefObject<HTMLButtonElement | null>) {
 
 function BotMessage({ id, reply, onNavigate }: { id: number; reply: ChatReply; onNavigate: () => void }) {
   const { card, text, list, links } = reply;
+  const theme = useTheme();
   return <div className="chat-row" data-msg={id}>
-    <img src={bot.avatar} alt="" width="30" height="30"/>
+    <img src={theme.avatar} alt="" width="30" height="30"/>
     <div className="chat-stack">
       {card && <figure className={`chat-card${card.contain ? " contain" : ""}`}><img src={`/images/hero/${card.image}`} alt={card.alt} loading="lazy"/><figcaption><strong>{card.name}</strong><span>{card.label}</span></figcaption></figure>}
       {text.map(t => <p key={t} className="chat-msg">{t}</p>)}
       {list && <ul className="chat-list">{list.map(item => <li key={item.title}><strong>{item.title}</strong><span>{item.detail}</span>{item.href && <a href={item.href} target="_blank" rel="noreferrer">Get directions <ArrowUpRight size={13}/></a>}</li>)}</ul>}
-      {links && <div className="chat-links">{links.map(link => <a key={link.href} href={link.href} {...external(link.href)} onClick={link.href.startsWith("#") || link.href.startsWith("/#") ? onNavigate : undefined}>{link.label}<ArrowUpRight size={15}/></a>)}</div>}
+      {links && <div className="chat-links">{links.map(link => { const href = themeHref(theme, link.href); return <a key={link.href} href={href} {...external(href)} onClick={link.href.startsWith("#") || link.href.startsWith("/#") ? onNavigate : undefined}>{link.label}<ArrowUpRight size={15}/></a>; })}</div>}
     </div>
   </div>;
 }
 
 export function ChatBot({ brand }: { brand?: string }) {
+  const { avatar } = useTheme();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState(() => start(brand));
   const [typing, setTyping] = useState(false);
@@ -102,7 +106,7 @@ export function ChatBot({ brand }: { brand?: string }) {
   return <div className={`chatbot${overHero ? " on-hero" : ""}`}>
     <div className="chat-panel" id="chat-panel" ref={panel} role="dialog" aria-label={`Chat with ${bot.name}`} tabIndex={-1} hidden={!open} onKeyDown={e => { if (e.key === "Escape") setOpen(false); }}>
       <div className="chat-head">
-        <img src={bot.avatar} alt="" width="42" height="42"/>
+        <img src={avatar} alt="" width="42" height="42"/>
         <div><strong>{bot.name}</strong><span>{bot.role}</span></div>
         <button onClick={restart} aria-label="Start over"><RotateCcw size={17}/></button>
         <button onClick={() => setOpen(false)} aria-label="Close chat"><X size={20}/></button>
@@ -124,7 +128,7 @@ export function ChatBot({ brand }: { brand?: string }) {
       <button className="chat-teaser-x" onClick={dismissTeaser} aria-label="Dismiss"><X size={12}/></button>
     </div>}
     <button ref={launcher} className={`chat-launcher${open ? " open" : ""}${teaser !== null ? " nudge" : ""}`} onClick={() => { dismissTeaser(); setOpen(o => !o); }} aria-expanded={open} aria-controls="chat-panel">
-      {open ? <X size={22}/> : <span className="chat-icon"><img src={bot.avatar} alt="" width="44" height="44"/><i className="chat-online" aria-hidden="true"/></span>}<span>{open ? "Close chat" : `Ask ${bot.name}`}</span>
+      {open ? <X size={22}/> : <span className="chat-icon"><img src={avatar} alt="" width="44" height="44"/><i className="chat-online" aria-hidden="true"/></span>}<span>{open ? "Close chat" : `Ask ${bot.name}`}</span>
     </button>
   </div>;
 }

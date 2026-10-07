@@ -1,0 +1,101 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 700px;
+  height: calc(100svh - 35px);
+  max-height: 1000px;
+  overflow: hidden;
+  background: var(--forest);
+  color: var(--ivory);
+}
+
+.hero-slides, .hero-slide { position: absolute; inset: 0; }
+.hero-slide { opacity: 0; background: var(--forest); transition: opacity .7s ease; }
+.hero-slide.active { opacity: 1; z-index: 1; }
+.hero-slide > img { width: 100%; height: 100%; object-fit: cover; }
+.hero-slide::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(38,58,27,.82), rgba(38,58,27,.38) 58%, rgba(38,58,27,.08)),
+    linear-gradient(0deg, rgba(38,58,27,.9), transparent 55%, rgba(38,58,27,.35));
+}
+
+/* Product cutouts get a quiet display area instead of being stretched to fill. */
+.hero-slide.contain::before { content: ""; position: absolute; inset: 96px 0 0 59%; background: var(--ivory); }
+.hero-slide.contain > img { position: absolute; top: 96px; left: 59%; width: 41%; height: calc(100% - 200px); padding: 50px 5%; object-fit: contain; mix-blend-mode: multiply; }
+.hero-slide.contain::after { background: linear-gradient(0deg, rgba(38,58,27,.9), transparent 28%); }
+
+.hero-stage { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 180px 5% 56px; flex: 1; }
+.hero-copy { max-width: min(720px, 62%); }
+.hero .eyebrow { color: var(--stone); text-transform: uppercase; }
+.hero h1 { margin: 22px 0; color: var(--ivory); font-size: clamp(40px, 4.8vw, 72px); line-height: 1.08; letter-spacing: -.045em; text-wrap: balance; }
+.hero-description { max-width: 430px; color: var(--stone); font-size: 16px; line-height: 1.7; }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 28px; margin-top: 30px; }
+.hero-explore { display: inline-flex; align-items: center; gap: 12px; min-height: 50px; padding: 0; border: 0; background: none; color: var(--ivory); font-size: 14px; }
+.hero-explore:hover { color: var(--sage); }
+.hero-credit { position: absolute; z-index: 3; top: 120px; right: 5%; font-size: 10px; color: var(--stone); text-shadow: 0 1px 6px var(--forest); }
+.hero-controls { display: flex; flex-shrink: 0; align-items: center; gap: 8px; }
+.hero-count { padding-right: 16px; font-size: 12px; font-variant-numeric: tabular-nums; letter-spacing: .08em; white-space: nowrap; }
+.hero-count > span { margin-left: 5px; color: var(--sage); }
+.hero-controls button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(245, 242, 233, .4); border-radius: 50%; background: rgba(38,58,27,.16); color: var(--ivory); transition: background .2s, color .2s; }
+.hero-controls button:hover { background: var(--ivory); color: var(--forest); }
+.hero-controls .hero-pause { width: 32px; border-color: transparent; background: none; }
+
+.hero-bar { position: relative; z-index: 2; padding: 0 max(5%, 196px) 22px 5%; }
+.hero-categories { position: relative; display: flex; gap: 18px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--olive) transparent; }
+.hero-category { position: relative; display: flex; flex: 1 0 0; flex-direction: column; gap: 9px; min-width: 88px; min-height: 82px; padding: 17px 0 12px; border: 0; border-top: 1px solid rgba(245, 242, 233, .28); background: none; color: var(--sage); text-align: left; font-size: 12px; line-height: 1.45; }
+.hero-category:hover, .hero-category.active { color: var(--ivory); border-top-color: var(--ivory); }
+.hero-category.active { font-weight: 600; }
+.hero-category-number { font-size: 10px; font-weight: 400; letter-spacing: .08em; opacity: .7; }
+.hero-progress { position: absolute; left: 0; right: 0; top: -1px; height: 2px; background: var(--sage); transform-origin: left; animation: heroProgress 7s linear both; }
+.hero[data-running="false"] .hero-progress { animation-play-state: paused; }
+.hero a:focus-visible, .hero button:focus-visible { outline-color: var(--ivory); outline-offset: 4px; }
+.hero-category:focus-visible { outline-offset: -3px !important; }
+@keyframes heroProgress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (min-width: 1600px) {
+  .hero-stage, .hero-bar { padding-left: max(5%, calc((100% - 1400px) / 2)); padding-right: max(5%, calc((100% - 1400px) / 2)); }
+  .hero-bar { padding-right: max(196px, calc((100% - 1400px) / 2)); }
+  .hero-credit { right: max(5%, calc((100% - 1400px) / 2)); }
+}
+
+@media (max-width: 1100px) {
+  .hero-stage { gap: 24px; }
+  .hero-bar { padding-right: 104px; }
+  .hero-copy { max-width: 68%; }
+  .hero-category { min-width: 104px; }
+  .hero-count { padding-right: 4px; }
+  .hero-slide.contain::before { left: 66%; }
+  .hero-slide.contain > img { left: 66%; width: 34%; padding: 30px; }
+}
+
+@media (max-width: 760px) {
+  .hero { min-height: max(720px, calc(100svh - 29px)); height: auto; max-height: none; }
+  .hero-stage { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 25px; padding: 270px 6% 24px; }
+  .hero-copy { max-width: 100%; width: 100%; }
+  .hero .eyebrow { font-size: 10px !important; }
+  .hero h1 { margin: 16px 0; font-size: clamp(32px, 8.5vw, 48px); line-height: 1.1; }
+  .hero-description { max-width: 350px; font-size: 14px; }
+  .hero-actions { gap: 8px 20px; margin-top: 22px; }
+  .hero-actions .button { padding: 13px 18px; font-size: 13px; }
+  .hero-explore { min-height: 44px; font-size: 13px; }
+  .hero-controls { width: 100%; }
+  .hero-count { margin-right: auto; }
+  .hero-bar { padding: 0 80px 18px 6%; }
+  .hero-categories { gap: 18px; }
+  .hero-category { flex: 0 0 118px; min-height: 76px; gap: 7px; padding-top: 14px; }
+  .hero-credit { top: 99px; right: 6%; font-size: 9px; }
+  .hero-slide::after { background: linear-gradient(0deg, rgba(38,58,27,.98) 8%, rgba(38,58,27,.76) 44%, rgba(38,58,27,.1) 80%, rgba(38,58,27,.45)); }
+  .hero-slide.contain::before { inset: 76px 0 auto; height: 200px; }
+  .hero-slide.contain > img { top: 76px; left: 0; width: 100%; height: 200px; padding: 20px 22%; }
+  .hero-slide.contain::after { background: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { transition: none; }
+  .hero-progress { animation: none; }
+  .hero-pause { display: none !important; }
+}

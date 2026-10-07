@@ -2,11 +2,11 @@
 export type Brand = {
   slug: string;
   name: string;
-  wordmark: string; // Class from globals.css used to style the text wordmark until a real logo is supplied.
+  wordmark: string; // Class from each theme's theme.css used to style the text wordmark until a real logo is supplied.
   category: string;
   tagline: string;
   intro: string;
-  accent: string;
+  accent: string; // A colour or a --accent-* token that each theme's theme.css defines.
   image: string;
   focus?: string;
   imageAlt: string;
@@ -24,7 +24,7 @@ export const brands: Brand[] = [
     category: "Roofing",
     tagline: "A home begins with a vision. A roof completes it.",
     intro: "Roofing leads our range of building and living solutions. Discover roofing with Atlantique, brought to you by Hommet.",
-    accent: "#B4472B",
+    accent: "var(--accent-atlantique)",
     image: "/images/brands/atlantique.jpg",
     focus: "center 55%",
     imageAlt: "Dark grey profiled roof tiles in bright light",
@@ -93,7 +93,7 @@ export const brands: Brand[] = [
     category: "Steel doors",
     tagline: "A welcome to your world.",
     intro: "Explore STALY steel doors with Hommet. Speak to us about your space and requirements.",
-    accent: "#3D4A5C",
+    accent: "var(--accent-staly)",
     image: "/images/brands/staly.jpg",
     focus: "30% center",
     imageAlt: "Brushed steel door set in a red brick wall",
@@ -125,7 +125,7 @@ export const brands: Brand[] = [
     category: "UPVC",
     tagline: "Light, air and lasting frames.",
     intro: "Explore Leoplast UPVC doors and windows with Hommet. Tell us about your project and we will help with the options.",
-    accent: "#1E6FB8",
+    accent: "var(--accent-leoplast)",
     image: "/images/brands/leoplast.jpg",
     focus: "center 40%",
     imageAlt: "Two white-framed windows on a yellow wall",

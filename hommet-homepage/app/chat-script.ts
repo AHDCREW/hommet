@@ -2,7 +2,8 @@ import { categories, offices, enquiry, quotation } from "./site-data";
 import { brandBySlug } from "./brands";
 
 // Homi is a scripted guide: visitors pick from suggested topics, and every answer below is predefined.
-export const bot = { name: "Homi", role: "Hommet guide · Automated replies", avatar: "/images/hommet_icon-160.png" };
+// The avatar differs per palette, so it lives in app/themes.ts.
+export const bot = { name: "Homi", role: "Hommet guide · Automated replies" };
 
 export type ChatOption = { label: string; topic: string };
 export type ChatReply = {

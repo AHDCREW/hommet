@@ -8,6 +8,7 @@ import { Headline, Pull } from "@/components/reveal";
 import { brandBySlug, type Brand } from "@/app/brands";
 import { categoryBrands, categoryPages, type CategoryId } from "@/app/category-products";
 import { quotation } from "@/app/site-data";
+import { themes, type ThemeId } from "@/app/themes";
 
 const pageFor = (id: CategoryId) => categoryPages.find(p => p.id === id)!;
 
@@ -16,19 +17,19 @@ export const categoryMetadata = (id: CategoryId): Metadata => {
   return { title: `${category.name} | Hommet`, description: category.description };
 };
 
-// /roofing, /doors and /sealants: hero, the full product grid, partner brands where there are any, and a quote band.
+// /home1|home2/roofing, /doors and /sealants: hero, the full product grid, partner brands where there are any, and a quote band.
 // Hero, grid and partner tiles reuse the brand-page styles so the header and chat launcher behave the same way.
-export function CategoryPage({ id }: { id: CategoryId }) {
+export function CategoryPage({ id, theme }: { id: CategoryId; theme: ThemeId }) {
   const { category, hero, list } = pageFor(id);
   const partners = categoryBrands[id].map(brandBySlug).filter((b): b is Brand => !!b);
-  return <div className="brand-page" style={{ "--brand": "#2563EB" } as React.CSSProperties}>
+  return <div className="brand-page" style={{ "--brand": "var(--accent-category)" } as React.CSSProperties}>
     <a className="skip-link" href="#main">Skip to content</a>
     <SiteHeader/>
     <main id="main">
       <section className="brand-hero cat-hero">
         <img src={hero.photo} alt={hero.photoAlt} style={{ objectPosition: hero.focus }} width="2000" height="1125"/>
         <div className="brand-hero-copy">
-          <a className="brand-back" href="/#products"><ArrowLeft size={15}/> All products</a>
+          <a className="brand-back" href={`${themes[theme].base}#products`}><ArrowLeft size={15}/> All products</a>
           <p className="eyebrow">{category.label.toUpperCase()} / BY HOMMET</p>
           <h1>{category.name}</h1>
           <p className="brand-intro">{category.description}</p>

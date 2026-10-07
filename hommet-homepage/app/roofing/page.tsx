@@ -1,7 +1,6 @@
-import { CategoryPage, categoryMetadata } from "@/components/category-page";
+import { redirect } from "next/navigation";
 
-export const metadata = categoryMetadata("roofing");
-
+// Old address from before the two palettes: forwards to the /home1 version.
 export default function Page() {
-  return <CategoryPage id="roofing"/>;
+  redirect("/home1/roofing");
 }

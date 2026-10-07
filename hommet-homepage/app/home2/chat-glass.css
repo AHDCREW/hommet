@@ -1,0 +1,37 @@
+/* Homi launcher and its pop-up bubble. Over a hero image (`.chatbot.on-hero`, set in chat-bot.tsx) they are frosted / liquid glass;
+   everywhere else they keep the solid base styles from globals.css and fade back to them. Selectors start with `.chatbot` so they win
+   over the base rules, which are imported after this file. Motion stops under prefers-reduced-motion via the global rule. */
+
+/* Fades between the two looks. */
+.chatbot .chat-launcher{transition:transform .2s,box-shadow .35s,background-color .45s,-webkit-backdrop-filter .45s,backdrop-filter .45s}
+.chatbot .chat-teaser-open{transition:transform .2s,box-shadow .35s,background-color .45s,color .45s,-webkit-backdrop-filter .45s,backdrop-filter .45s}
+
+/* ---- Glass, while over the hero ---- */
+.chatbot.on-hero .chat-launcher,.chatbot.on-hero .chat-teaser-open{
+  background-color:rgba(245,242,233,.66);
+  -webkit-backdrop-filter:blur(18px) saturate(190%);backdrop-filter:blur(18px) saturate(190%);
+  /* Rim light on the top edge, soft inner edge, hairline outline, then the drop shadow. */
+  box-shadow:inset 0 1px 1px rgba(245,242,233,.95),inset 0 -1px 1px rgba(38,58,27,.06),inset 0 0 0 1px rgba(245,242,233,.5),0 0 0 1px rgba(38,58,27,.07),0 14px 34px rgba(38,58,27,.2);
+  text-shadow:0 1px 0 rgba(245,242,233,.5);
+}
+/* Springy overshoot on the transform gives the liquid feel on hover and press. */
+.chatbot.on-hero .chat-launcher{animation:homiFloat 6s ease-in-out infinite;transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .35s,background-color .45s,-webkit-backdrop-filter .45s,backdrop-filter .45s}
+.chatbot.on-hero .chat-teaser-open{color:var(--c-ink);transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .35s,background-color .45s,color .45s,-webkit-backdrop-filter .45s,backdrop-filter .45s}
+.chatbot.on-hero .chat-launcher:hover,.chatbot.on-hero .chat-teaser-open:hover{box-shadow:inset 0 1px 1px var(--ivory),inset 0 -1px 1px rgba(38,58,27,.06),inset 0 0 0 1px rgba(245,242,233,.65),0 0 0 1px rgba(38,58,27,.08),0 20px 44px rgba(38,58,27,.26)}
+.chatbot.on-hero .chat-launcher:hover{transform:translateY(-3px) scale(1.04)}
+.chatbot.on-hero .chat-teaser-open:hover{transform:translateY(-3px) scale(1.03)}
+.chatbot.on-hero .chat-launcher:active{transform:scale(.96);transition-duration:.15s}
+.chatbot.on-hero .chat-teaser-open:focus-visible{outline-color:var(--c-ink)}
+/* The small print and typing dots are pale grey for the dark bubble; darken them for glass. */
+.chatbot.on-hero .chat-teaser-text small{color:var(--body)}
+.chatbot.on-hero .chat-teaser-dots span{background:var(--body)}
+/* A live "online" dot: the ring breathes outwards. */
+.chatbot.on-hero .chat-online{animation:homiLive 2.4s ease-out infinite}
+
+@keyframes homiFloat{0%,100%{translate:0 0}50%{translate:0 -3px}}
+@keyframes homiLive{0%{box-shadow:0 0 0 2px var(--ivory),0 0 0 2px rgba(104,124,60,.55)}70%,100%{box-shadow:0 0 0 2px var(--ivory),0 0 0 9px rgba(104,124,60,0)}}
+
+/* Without backdrop-filter there is nothing to frost, so use a near-solid fill to keep the label readable. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .chatbot.on-hero .chat-launcher,.chatbot.on-hero .chat-teaser-open{background-color:rgba(245,242,233,.94)}
+}
