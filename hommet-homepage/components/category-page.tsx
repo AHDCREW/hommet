@@ -21,7 +21,7 @@ export const categoryMetadata = (id: CategoryId): Metadata => {
 export function CategoryPage({ id }: { id: CategoryId }) {
   const { category, hero, list } = pageFor(id);
   const partners = categoryBrands[id].map(brandBySlug).filter((b): b is Brand => !!b);
-  return <div className="brand-page" style={{ "--brand": "#2563EB" } as React.CSSProperties}>
+  return <div className="brand-page" style={{ "--brand": "var(--olive-deep)" } as React.CSSProperties}>
     <a className="skip-link" href="#main">Skip to content</a>
     <SiteHeader/>
     <main id="main">

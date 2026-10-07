@@ -19,7 +19,7 @@ const SpotlightCard: React.FC<SpotlightCardProps> = ({
   as = 'div',
   children,
   className = '',
-  spotlightColor = 'rgba(255, 255, 255, 0.25)'
+  spotlightColor = 'rgba(245, 242, 233, 0.25)'
 }) => {
   const Tag = as as React.ElementType;
   const ref = useRef<HTMLElement>(null);

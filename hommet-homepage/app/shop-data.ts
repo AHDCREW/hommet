@@ -15,8 +15,21 @@ const shop: Record<string, { name: string; brand: string; price: number; unit: s
   automation:{name:"Building Automation",brand:"Hommet",price:15000,unit:"system"},
 };
 
-// Cut-out product shots on white don't work full-screen, so those products use their interior photo instead.
-export const products = categories.map(c => ({ ...c, ...shop[c.id], category: c.name, photo: c.contain ? `/images/interiors/wide/${c.id}.jpg` : `/images/hero/${c.image}`, photoAlt: c.contain ? c.interiorAlt : c.alt }));
+// Full-screen photos for the hero slider and the /roofing, /doors and /sealants page heroes: public/images/showcase/<id>.jpg,
+// landscape, 2400 px wide (roofing is 2000), with the subject near the centre so phone crops still work.
+const showcaseAlt: Record<string, string> = {
+  roofing:"House with a standing-seam roof",
+  doors:"Honey-toned wooden front door flanked by two white-framed windows on a teal porch",
+  sealants:"Screws and plastic wall anchors on a red background",
+  terracotta:"Curving terracotta-coloured facade with textured clay-toned bands in strong sunlight",
+  sanitary:"Bright modern bathroom with a double wooden vanity, marble top, grey taps and two oval mirrors",
+  toilets:"Bright beige bathroom with a wall-hung toilet, bidet spray, bathtub and vessel-basin vanity",
+  fitness:"Bright home gym with benches, an exercise bike and a dumbbell rack beside a large window onto plants",
+  hvac:"White outdoor air-conditioner unit mounted on a white wall against a clear blue sky",
+  pumps:"Two industrial centrifugal pumps with electric motors and green pipework",
+  automation:"Modern black wall-mounted digital thermostat with a rotary knob on a minimalist interior wall",
+};
+export const products = categories.map(c => ({ ...c, ...shop[c.id], category: c.name, photo: `/images/showcase/${c.id}.jpg`, photoAlt: showcaseAlt[c.id] }));
 export type Product = (typeof products)[number];
 
 export const formatPrice = (n: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);

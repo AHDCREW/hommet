@@ -18,7 +18,7 @@ interface GlareHoverProps {
 
 const GlareHover: React.FC<GlareHoverProps> = ({
   children,
-  glareColor = '#ffffff',
+  glareColor = '#F5F2E9',
   glareOpacity = 0.5,
   glareAngle = -45,
   glareSize = 250,
@@ -71,9 +71,9 @@ const GlareHover: React.FC<GlareHoverProps> = ({
     inset: 0,
     zIndex: 2,
     background: `linear-gradient(${glareAngle}deg,
-        hsla(0,0%,0%,0) 60%,
+        rgba(245,242,233,0) 60%,
         ${rgba} 70%,
-        hsla(0,0%,0%,0) 100%)`,
+        rgba(245,242,233,0) 100%)`,
     backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
     backgroundRepeat: 'no-repeat',
     backgroundPosition: '-100% -100%, 0 0',

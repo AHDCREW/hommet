@@ -19,11 +19,15 @@ const partner = (id: CategoryId, brandSlug: string, name: string, slug: string, 
   if (!brand || !item) throw new Error(`Partner product not found: ${brandSlug} / ${name}`);
   return { slug, name, detail: item.detail, image: photo(id, slug), imageAlt, brand: brand.name };
 };
-// `noPhoto` marks a product with no suitable stock photo: it shows the category photo instead of a mismatched one.
-const generic = (id: CategoryId, slug: string, name: string, imageAlt: string, noPhoto = false): CategoryProduct => {
+// A product with no suitable stock photo (`noPhoto`) shows a category photo instead of a mismatched one: the roofing
+// photo for roofing, and the kitchen interior for sealants (the sealants hero photo is already used by the Anchors card).
+const fallbackPhoto = (id: CategoryId) => {
+  if (id === "sealants") return { image: "/images/interiors/wide/sealants.jpg", imageAlt: categories.find(c => c.id === id)!.interiorAlt };
   const hero = products.find(p => p.id === id)!;
-  return { slug, name, detail: GENERIC_DETAIL, image: noPhoto ? hero.photo : photo(id, slug), imageAlt: noPhoto ? hero.photoAlt : imageAlt };
+  return { image: hero.photo, imageAlt: hero.photoAlt };
 };
+const generic = (id: CategoryId, slug: string, name: string, imageAlt: string, noPhoto = false): CategoryProduct =>
+  ({ slug, name, detail: GENERIC_DETAIL, ...(noPhoto ? fallbackPhoto(id) : { image: photo(id, slug), imageAlt }) });
 
 export const categoryProducts: Record<CategoryId, CategoryProduct[]> = {
   roofing: [
@@ -63,16 +67,12 @@ export const categoryProducts: Record<CategoryId, CategoryProduct[]> = {
   ],
 };
 
-// The doors showcase photo is a tall close-up of a window pane, too weak for a wide page hero, so that page uses the STALY photo.
-const heroOverride: Partial<Record<CategoryId, { photo: string; photoAlt: string; focus?: string }>> = {
-  doors: { photo: "/images/brands/staly.jpg", photoAlt: "Brushed steel door set in a red brick wall", focus: "30% center" },
-};
-
-// Route id, category copy and hero photo for each page. The route id doubles as the category id in site-data.ts.
+// Route id, category copy and hero photo (the same showcase photo as the homepage slider) for each page.
+// The route id doubles as the category id in site-data.ts.
 export const categoryPages = (["roofing", "doors", "sealants"] as const).map(id => {
   const category = categories.find(c => c.id === id)!;
   const showcase = products.find(p => p.id === id)!;
-  const hero = heroOverride[id] ?? { photo: showcase.photo, photoAlt: showcase.photoAlt, focus: category.focus };
+  const hero = { photo: showcase.photo, photoAlt: showcase.photoAlt, focus: category.focus };
   return { id, path: `/${id}`, category, hero, list: categoryProducts[id] };
 });
 export type CategoryPageData = (typeof categoryPages)[number];

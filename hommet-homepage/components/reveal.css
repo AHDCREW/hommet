@@ -13,8 +13,8 @@
 @media (max-width:760px){.showcase-slot{flex-basis:80%}.glare-tile{border-radius:20px}}
 
 /* Quiet "discover" affordance on the large category tiles; the whole tile (and the pill) stay the click targets. */
-.showcase-feature-go{position:absolute;top:18px;right:18px;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);color:#0B0B0C;pointer-events:none;transition:transform .5s cubic-bezier(.2,.7,.1,1),background .3s,color .3s}
-.showcase-feature:hover .showcase-feature-go{transform:scale(1.1);background:var(--blue,#2563EB);color:#fff}
+.showcase-feature-go{position:absolute;top:18px;right:18px;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(245,242,233,.92);color:var(--forest);pointer-events:none;transition:transform .5s cubic-bezier(.2,.7,.1,1),background .3s,color .3s}
+.showcase-feature:hover .showcase-feature-go{transform:scale(1.1);background:var(--olive-deep);color:var(--ivory)}
 
 /* Header navigation: small uppercase links with a drawn underline. */
 .desktop-nav a{position:relative;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
