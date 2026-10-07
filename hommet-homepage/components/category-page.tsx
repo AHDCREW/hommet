@@ -26,7 +26,7 @@ export function CategoryPage({ id }: { id: CategoryId }) {
     <SiteHeader/>
     <main id="main">
       <section className="brand-hero cat-hero">
-        <img src={hero.photo} alt={hero.photoAlt} style={{ objectPosition: category.focus }} width="2000" height="1125"/>
+        <img src={hero.photo} alt={hero.photoAlt} style={{ objectPosition: hero.focus }} width="2000" height="1125"/>
         <div className="brand-hero-copy">
           <a className="brand-back" href="/#products"><ArrowLeft size={15}/> All products</a>
           <p className="eyebrow">{category.label.toUpperCase()} / BY HOMMET</p>
