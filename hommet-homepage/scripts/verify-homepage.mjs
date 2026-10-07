@@ -1,0 +1,26 @@
+﻿import { chromium } from '@playwright/test';
+import fs from 'node:fs/promises';
+await fs.mkdir('qa',{recursive:true});
+const browser=await chromium.launch({channel:'msedge',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1050}});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:5173/',{waitUntil:'networkidle'});
+await page.screenshot({path:'qa/desktop.png',fullPage:true});
+console.log('desktop',await page.title(),'cards',await page.locator('.category-card').count(),'overflow',await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
+await page.getByRole('button',{name:'Explore Doors & Windows',exact:true}).click();
+await page.getByRole('dialog').waitFor();
+console.log('dialog',await page.getByRole('dialog').innerText());
+await page.keyboard.press('Escape');
+await page.setViewportSize({width:390,height:844});
+await page.goto('http://127.0.0.1:5173/',{waitUntil:'networkidle'});
+await page.screenshot({path:'qa/mobile.png',fullPage:true});
+console.log('mobile overflow',await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
+await page.getByRole('button',{name:'Open navigation'}).click();
+await page.getByRole('navigation',{name:'Mobile navigation'}).getByRole('link',{name:'Our solutions'}).click();
+await page.getByRole('navigation',{name:'Mobile navigation'}).waitFor({state:'detached',timeout:3000}).catch(()=>{});
+await page.waitForTimeout(1200);
+console.log('mobile menu closes',await page.getByRole('navigation',{name:'Mobile navigation'}).count()===0,'scrolled to solutions',await page.evaluate(()=>{const top=document.getElementById('solutions').getBoundingClientRect().top,header=document.querySelector('.site-header').getBoundingClientRect().bottom;return top>=header&&top<header+60;}));
+console.log('errors',errors);
+// Lazy images off-screen (e.g. later slider cards) haven't loaded yet, so check those files exist instead.
+console.log('images',await page.locator('img').evaluateAll(async imgs=>(await Promise.all(imgs.filter(i=>!i.complete||!i.naturalWidth).map(async i=>i.loading==='lazy'&&(await fetch(i.src)).ok?null:i.getAttribute('src')))).filter(Boolean)));
+await browser.close();

@@ -1,0 +1,25 @@
+/* Animated layer: React Bits components adapted in components/reveal.tsx. Reuses the site's colour tokens. */
+
+/* Split headings: one block per line; the padding stops the reveal mask clipping descenders. */
+.hl-line{display:block}
+.split-parent{padding-bottom:.14em;margin-bottom:-.14em}
+
+/* Wrappers that now sit between a grid/flex container and its tiles. */
+.principle-slot{display:flex;min-width:0}
+.principle-slot>article{flex:1;min-width:0}
+.showcase-slot,.brand-slot{min-width:0}
+.glare-tile{border-radius:24px}
+@media (max-width:900px){.showcase-slot{flex:0 0 62%;scroll-snap-align:start}}
+@media (max-width:760px){.showcase-slot{flex-basis:80%}.glare-tile{border-radius:20px}}
+
+/* Quiet "discover" affordance on the large category tiles; the whole tile (and the pill) stay the click targets. */
+.showcase-feature-go{position:absolute;top:18px;right:18px;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);color:#0B0B0C;pointer-events:none;transition:transform .5s cubic-bezier(.2,.7,.1,1),background .3s,color .3s}
+.showcase-feature:hover .showcase-feature-go{transform:scale(1.1);background:var(--blue,#2563EB);color:#fff}
+
+/* Header navigation: small uppercase links with a drawn underline. */
+.desktop-nav a{position:relative;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.desktop-nav a::after{content:"";position:absolute;left:0;right:0;bottom:10px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.7,.1,1)}
+.desktop-nav a:hover::after{transform:scaleX(1)}
+.desktop-nav a,.header-enquiry{white-space:nowrap}
+@media (max-width:1100px){.desktop-nav a{font-size:11px;letter-spacing:.05em}}
+@media (max-width:900px){.site-header .desktop-nav{gap:14px}.site-header .desktop-nav a{letter-spacing:.02em}}
