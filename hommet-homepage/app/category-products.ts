@@ -81,4 +81,4 @@ export type CategoryPageData = (typeof categoryPages)[number];
 export const categoryBrands: Record<CategoryId, string[]> = { roofing: ["atlantique"], doors: ["staly", "leoplast"], sealants: [] };
 
 // The homepage shows this many cards per category; "Show more" appears only when a category has more.
-export const HOME_PRODUCT_LIMIT = 8;
+export const HOME_PRODUCT_LIMIT = 4;
