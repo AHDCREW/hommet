@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, RotateCcw, X } from "lucide-react";
 import { bot, greetingFor, reply, teaserFor, type ChatReply } from "@/app/chat-script";
 import { themeHref } from "@/app/themes";
@@ -9,7 +9,7 @@ import { useTheme } from "@/components/theme-context";
 type Message = { id: number; from: "bot"; reply: ChatReply } | { id: number; from: "user"; text: string };
 const start = (brand?: string): Message[] => [{ id: 0, from: "bot", reply: greetingFor(brand) }];
 const SEEN = "homi-teaser-seen";
-const REMIND = 8000; // ms before the pop-up comes back after it is closed with the X
+const REMIND = 8000; // ms before the pop-up comes back after it or the chat panel is closed
 const external = (href: string) => href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
 
 // True while the launcher sits over a hero image (home slider or brand page). The launcher and its bubble are glass
@@ -68,9 +68,10 @@ export function ChatBot({ brand }: { brand?: string }) {
   const lines = teaserFor(brand);
   const seen = useRef(false);
   const remind = useRef(0);
-  // Opening the chat retires the pop-up for the visit; closing it with the X only hides it until the next reminder.
+  const scheduleRemind = useCallback(() => { window.clearTimeout(remind.current); remind.current = window.setTimeout(() => setTeaser(0), REMIND); }, []);
+  // Opening the chat hides the pop-up; it comes back REMIND ms after the chat panel or the pop-up's X is closed.
   const dismissTeaser = () => { seen.current = true; window.clearTimeout(remind.current); setTeaser(null); try { sessionStorage.setItem(SEEN, "1"); } catch { } };
-  const closeTeaser = () => { seen.current = true; setTeaser(null); window.clearTimeout(remind.current); remind.current = window.setTimeout(() => setTeaser(0), REMIND); };
+  const closeTeaser = () => { seen.current = true; setTeaser(null); scheduleRemind(); };
 
   // Greet once per visit: typing dots, a hello, then the quote nudge, then it tucks itself away.
   useEffect(() => {
@@ -83,8 +84,8 @@ export function ChatBot({ brand }: { brand?: string }) {
   useEffect(() => () => { window.clearTimeout(timer.current); window.clearTimeout(remind.current); }, []);
   useEffect(() => {
     if (open) { opened.current = true; panel.current?.focus(); }
-    else if (opened.current) launcher.current?.focus();
-  }, [open]);
+    else if (opened.current) { launcher.current?.focus(); scheduleRemind(); }
+  }, [open, scheduleRemind]);
   // Show each new reply together with the question that prompted it, even when the reply is taller than the panel.
   useEffect(() => {
     const el = scroller.current;
