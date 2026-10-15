@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { categories, quotation } from "@/app/site-data";
+import { categoryPages } from "@/app/category-products";
 import { Glare, Reveal } from "@/components/reveal";
+import { useTheme } from "@/components/theme-context";
 
 type Category = (typeof categories)[number];
 
@@ -12,12 +14,17 @@ const featured = ["roofing", "doors", "sanitary"];
 
 const image = (item: Category) => `/images/interiors/${item.id}.jpg`;
 
+// Categories with their own page (see categoryPages) link to it; the rest open the details dialog.
+const pagePaths = new Map<string, string>(categoryPages.map(p => [p.id, p.path]));
+
 // Whether the rail is scrolled to either end, to disable the matching arrow.
 const edges = (el: HTMLElement) => ({ start: el.scrollLeft <= 2, end: el.scrollLeft >= el.scrollWidth - el.clientWidth - 2 });
 
 export function CategoryShowcase({ onSelect }: { onSelect: (item: Category) => void }) {
   const rail = useRef<HTMLDivElement>(null);
   const [edge, setEdge] = useState({ start: true, end: false });
+  const { base } = useTheme();
+  const pageHref = (item: Category) => { const path = pagePaths.get(item.id); return path ? `${base}${path}` : null; };
 
   useEffect(() => {
     const el = rail.current;
@@ -34,8 +41,10 @@ export function CategoryShowcase({ onSelect }: { onSelect: (item: Category) => v
     <div className="showcase-featured">
       {categories.filter(item => featured.includes(item.id)).map((item, i) => <Reveal key={item.id} className="showcase-slot" delay={i * 0.12}><Glare className="glare-tile"><div className="showcase-feature">
         <img src={image(item)} alt={item.interiorAlt} width="960" height="1200" loading="lazy"/>
-        {/* The whole tile opens the details; the pill above it goes straight to a quote. */}
-        <button className="showcase-feature-open" onClick={() => onSelect(item)} aria-label={`Explore ${item.name}`}/>
+        {/* The whole tile opens the category page (or the details); the pill above it goes straight to a quote. */}
+        {pageHref(item)
+          ? <a className="showcase-feature-open" href={pageHref(item)!} aria-label={`Explore ${item.name}`}/>
+          : <button className="showcase-feature-open" onClick={() => onSelect(item)} aria-label={`Explore ${item.name}`}/>}
         <span className="showcase-feature-go" aria-hidden="true"><ArrowUpRight size={20}/></span>
         <div className="showcase-feature-copy">
           <span className="showcase-feature-label">{item.label}</span>
@@ -54,11 +63,17 @@ export function CategoryShowcase({ onSelect }: { onSelect: (item: Category) => v
       </div>
     </div>
     <div className="showcase-rail" ref={rail} onScroll={e => setEdge(edges(e.currentTarget))}>
-      {categories.map(item => <button key={item.id} className="showcase-card" onClick={() => onSelect(item)} aria-label={`Explore ${item.name}`}>
-        <span className="showcase-card-image"><img src={image(item)} alt={item.interiorAlt} width="960" height="1200" loading="lazy"/></span>
-        <span className="showcase-card-name">{item.name}</span>
-        <span className="showcase-card-label">{item.label}</span>
-      </button>)}
+      {categories.map(item => {
+        const body = <>
+          <span className="showcase-card-image"><img src={image(item)} alt={item.interiorAlt} width="960" height="1200" loading="lazy"/></span>
+          <span className="showcase-card-name">{item.name}</span>
+          <span className="showcase-card-label">{item.label}</span>
+        </>;
+        const href = pageHref(item);
+        return href
+          ? <a key={item.id} className="showcase-card" href={href} aria-label={`Explore ${item.name}`}>{body}</a>
+          : <button key={item.id} className="showcase-card" onClick={() => onSelect(item)} aria-label={`Explore ${item.name}`}>{body}</button>;
+      })}
     </div>
     </Reveal>
   </div>;
