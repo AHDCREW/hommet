@@ -15,7 +15,7 @@ const shop: Record<string, { name: string; brand: string; price: number; unit: s
   automation:{name:"Building Automation",brand:"Hommet",price:15000,unit:"system"},
 };
 
-// Full-screen photos for the hero slider and the /roofing, /doors and /sealants page heroes: public/images/showcase/<id>.jpg,
+// Full-screen photos for the hero slider and the category page heroes: public/images/showcase/<id>.jpg,
 // landscape, 2400 px wide (roofing is 2000), with the subject near the centre so phone crops still work.
 const showcaseAlt: Record<string, string> = {
   roofing:"House with a standing-seam roof",

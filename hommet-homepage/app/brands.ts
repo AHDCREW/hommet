@@ -139,6 +139,10 @@ export const brands: Brand[] = [
       {
         "name": "UPVC doors",
         "detail": "Ask our team for the available door options."
+      },
+      {
+        "name": "ASA uPVC roofing sheets",
+        "detail": "3 mm roofing sheets with an ASA weather-resistant top layer, 1050 mm effective width, in eight colours."
       }
     ],
   },

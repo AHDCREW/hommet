@@ -22,7 +22,7 @@ export function CategoryProducts() {
     select(next);
   };
   return <section className="products section" id="products">
-    <div className="section-heading"><div><p className="eyebrow">02 / OUR PRODUCTS</p><Headline lines={[{ text: "Products for" }, { text: "every part of the build.", em: true }]}/></div><Intro>Browse roofing, doors and windows, and sealants. Ask our team for a quotation on anything you need.</Intro></div>
+    <div className="section-heading"><div><p className="eyebrow">02 / OUR PRODUCTS</p><Headline lines={[{ text: "Products for" }, { text: "every part of the build.", em: true }]}/></div><Intro>Browse roofing, doors and windows, sealants, terracotta and pumps. Ask our team for a quotation on anything you need.</Intro></div>
     <div className="ptabs" role="tablist" aria-label="Product categories">
       {categoryPages.map(({ id, category }, i) => <button key={id} ref={el => { tabs.current[i] = el; }} className="ptab" role="tab" id={`ptab-${id}`} aria-selected={i === active} aria-controls={`ppanel-${id}`} tabIndex={i === active ? 0 : -1} onClick={() => setActive(i)} onKeyDown={e => onKeyDown(e, i)}>{category.name}</button>)}
     </div>
@@ -37,7 +37,7 @@ export function CategoryProducts() {
       </div>
       {list.length > HOME_PRODUCT_LIMIT && <div className="pblock-more"><a className="button" href={`${base}${path}`}>Show more<ArrowRight size={17}/></a></div>}
     </div>)}
-    <p className="image-note">Product photography is illustrative, pending Hommet product photography. See image credits.</p>
+    <p className="image-note">Partner product photos are from the brand catalogues; other product photography is illustrative. See image credits.</p>
   </section>;
 }
 

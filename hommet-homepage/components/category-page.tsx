@@ -17,7 +17,7 @@ export const categoryMetadata = (id: CategoryId): Metadata => {
   return { title: `${category.name} | Hommet`, description: category.description };
 };
 
-// /home2/roofing, /doors and /sealants: hero, the full product grid, partner brands where there are any, and a quote band.
+// /home2/roofing, /doors, /sealants, /terracotta and /pumps: hero, the full product grid, partner brands where there are any, and a quote band.
 // Hero, grid and partner tiles reuse the brand-page styles so the header and chat launcher behave the same way.
 export function CategoryPage({ id, theme }: { id: CategoryId; theme: ThemeId }) {
   const { category, hero, list } = pageFor(id);
@@ -39,7 +39,9 @@ export function CategoryPage({ id, theme }: { id: CategoryId; theme: ThemeId }) 
       <section className="section cat-range" id="products">
         <div className="section-heading"><div><p className="eyebrow">PRODUCT RANGE</p><h2>Explore the<br/><em>full range.</em></h2></div><p>Share your requirements and our team will confirm the right options for your project.</p></div>
         <ProductGrid list={list}/>
-        <p className="image-note">Product photography is illustrative, pending Hommet product photography. Product types shown are indicative; ask our team for the available range.</p>
+        <p className="image-note">{list.every(p => p.brand)
+          ? "Product photos and details are from the brand catalogues. Ask our team for the available range."
+          : "Partner product photos are from the brand catalogues; other product photography is illustrative. Product types shown are indicative; ask our team for the available range."}</p>
       </section>
       {partners.length > 0 && <section className="section brand-more">
         <div className="section-heading"><div><p className="eyebrow">OUR PARTNER BRANDS</p><h2>Brands in<br/><em>this range.</em></h2></div></div>
