@@ -17,7 +17,7 @@ export const categoryMetadata = (id: CategoryId): Metadata => {
   return { title: `${category.name} | Hommet`, description: category.description };
 };
 
-// /home1|home2/roofing, /doors and /sealants: hero, the full product grid, partner brands where there are any, and a quote band.
+// /home2/roofing, /doors and /sealants: hero, the full product grid, partner brands where there are any, and a quote band.
 // Hero, grid and partner tiles reuse the brand-page styles so the header and chat launcher behave the same way.
 export function CategoryPage({ id, theme }: { id: CategoryId; theme: ThemeId }) {
   const { category, hero, list } = pageFor(id);

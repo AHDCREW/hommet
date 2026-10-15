@@ -13,7 +13,7 @@ const REMIND = 8000; // ms before the pop-up comes back after it or the chat pan
 const external = (href: string) => href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {};
 
 // True while the launcher sits over a hero image (home slider or brand page). The launcher and its bubble are glass
-// there and go back to solid white/dark below it (see chat-glass.css in app/home1 and app/home2). Without a hero it stays false.
+// there and go back to solid white/dark below it (see chat-glass.css in app/home2). Without a hero it stays false.
 function useOverHero(launcher: React.RefObject<HTMLButtonElement | null>) {
   const [over, setOver] = useState(false);
   useEffect(() => {

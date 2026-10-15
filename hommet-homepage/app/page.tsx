@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-// The site has two palettes, each at its own route: /home1 and /home2. The bare domain opens /home1.
+// The site's pages live under /home2 (olive and cream). The bare domain opens /home2.
 export default function Page() {
-  redirect("/home1");
+  redirect("/home2");
 }

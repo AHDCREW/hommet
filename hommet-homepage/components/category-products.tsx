@@ -44,7 +44,7 @@ export function CategoryProducts() {
 /* Previous layout, commented out: one stacked block per category with a 4x2 grid of product cards.
    To bring it back, rename it to CategoryProducts (replacing the tabbed one above) and add
    `import { ProductGrid } from "@/components/product-card";` and prefix each `href={path}` with `base` from useTheme(),
-   as above. The .pblock-* and .pgrid CSS is still in each theme's theme.css (app/home1, app/home2).
+   as above. The .pblock-* and .pgrid CSS is still in the theme's theme.css (app/home2).
 
 export function CategoryProductsBlocks() {
   return <section className="products section" id="products">

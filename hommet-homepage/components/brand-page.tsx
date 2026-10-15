@@ -15,7 +15,7 @@ export const brandMetadata = (slug: string): Metadata => {
   return brand ? { title: `${brand.name} ${brand.category} | Hommet`, description: brand.intro } : {};
 };
 
-// /home1|home2/brands/[slug]: one page per partner brand, shared by both palettes.
+// /home2/brands/[slug]: one page per partner brand, shared by the palette routes.
 export function BrandPage({ slug, theme }: { slug: string; theme: ThemeId }) {
   const brand = brandBySlug(slug);
   if (!brand) notFound();

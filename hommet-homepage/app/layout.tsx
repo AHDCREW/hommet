@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-// No stylesheet here: each palette's layout (app/home1, app/home2) loads its own, so the two never mix.
+// No stylesheet here: the palette's layout (app/home2) loads its own.
 export const metadata: Metadata = {
  title: "Hommet | Integrated Building & Living Solutions",
  description: "Everything your home needs, from one partner you trust. Explore building and living solutions with Hommet. Rooted in Kerala. Earning trust across India.",
